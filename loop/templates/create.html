@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить товар</title>
+</head>
+<body>
+{% block content %}
+<body>
+<h1>Добавление товара</h1>
+<div>
+    <a href="{% url 'index' %}">Главная</a>
+    {% for c in category %}
+    <a href="{% url 'category' c.pk %}">{{ c.name }}</a>
+    {% endfor %}
+</div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Добавить">
+</form>
+</body>
+{% endblock %}
+</html>
+</body>
+</html>

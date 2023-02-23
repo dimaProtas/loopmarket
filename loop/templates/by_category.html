@@ -1,0 +1,24 @@
+{% extends 'layout/basic.html' %}
+{% load static %}
+
+
+{% block title %}{{current_category}}::Loop Market{% endblock %}
+
+{% block content %}
+<h2 class="top_category">{{ current_category }}</h2>
+<div class="category_dress_block">
+    {% for p in product %}
+    <div class="dress__mini__block">
+        <h3 class="dress__text"><a class="dress__text" href="{% url 'detail' id=p.pk %}">
+            {% if p.image %}
+            <img class="dress__image" src="{{ p.image.url }}" width="240px" height="236px" alt="Rectangle">
+            {% endif %}
+            {{ p.name }}</a></h3>
+        <p class="cat_txt">{{ p.price }} ₽</p>
+    </div>
+    {% endfor%}
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,148 @@
+{% extends 'layout/basic.html' %}
+{% load static %}
+{% load cache %}
+{% block title %}
+Loop Market
+{% endblock %}
+{% block content %}
+{% if messages %}
+<div class="p-3 mb-2 bg-success text-white">
+    {% for message in messages %}
+    {% if message.tags %}{% endif %}{{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+<div class="content">
+    <div class="block_text_content">
+        <h1 class="text_content">Зимняя распродажа</h1>
+        <p class="text_content_front">СКИДКИ ДО 90%</p>
+        <button class="header__button"><a class="button_text" href="{% url 'price_lt' %}">СМОТРЕТЬ МОДЕЛИ</a></button>
+    </div>
+    <div class="block_price">
+        {% for i in page_obj %}
+        <a class="models__text" href="{% url 'detail' id=i.pk %}"><img class="content_img" width="300px" height="250px"
+                                                                       src="{{ i.image.url }}" alt="product"></a>
+        {% endfor %}
+    </div>
+</div>
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        <li class="page-item active" aria-current="page">
+        </li>
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt</a></li>
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<div class="banner__top">
+    <div class="banner__block">
+        <h2 class="banner__text">БЕСПЛАТНАЯ ДОСТАВКА ОТ 3000₽</h2>
+        <p class="banner__text__mini">Сделайте заказ и получите подарок!</p>
+    </div>
+</div>
+<div class="block__product">
+    {% for c in cat %}
+    <div class="block__man__product">
+        <div class="name__text__button">
+            <h3 class="name__product">{{ c.name }}</h3>
+            <p class="product__text">Обувь, полуверы, костюмы</p>
+            <button class="header__button product_button"><a href="{% url 'category' c.pk %}"><img
+                    src="{% static 'image/Arrow.svg' %}"
+                    alt="Arrow"></a></button>
+        </div>
+        {% if c.pk == 1 %}
+        <img class="product_img" src="{% static 'image/Rectangle_3.png' %}" alt="">
+        {% elif c.pk == 2 %}
+        <img class="product_img" src="{% static 'image/Rectangle_3.1.png' %}" alt="">
+        {% endif %}
+
+    </div>
+    {% endfor %}
+</div>
+<div class="dress__block">
+
+    {% for p in product %}
+    <div class="dress__mini__block">
+        <h3 class="dress__text"><a class="dress__text" href="{% url 'detail' id=p.pk %}">
+            {% if p.image %}
+            <img class="dress__image" src="{{ p.image.url }}" width="256px" height="256px" alt="Rectangle">
+            {% endif %}
+            {{ p.name }}
+        </a></h3>
+    </div>
+    {% endfor%}
+</div>
+{% cache 100 'new_model' %}
+<div class="new__models__block">
+    <div class="top__models__text">
+        <h1 class="new__models__text">Новые модели</h1>
+    </div>
+    <div class="new__models">
+        {% for p in prod %}
+        <div class="corner-box-1">
+            <div class="models">
+                <h3 class="models__text"><a class="models__text" href="{% url 'detail' id=p.pk %}">
+                    <img class="models__image" src="{{ p.image.url }}" width="205px" height="211px" alt="Rectangle_2">
+                    <p class="cart_txt">{{ p.name }}</p></a></h3>
+                <p class="models__price">{{ p.price }}&nbsp;₽</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="button__center">
+        <button class="models_button">
+            <a href="{% url 'category_stock' %}" class="arrow__bbuton">ВСЕ МОДЕЛИ<img class="arrow"
+                                                                                      src="{% static 'image/Arrow.svg' %}"
+                                                                                      alt=""></a>
+        </button>
+    </div>
+</div>
+{% endcache %}
+<div class="banner__email">
+    <h1 class="banner__text__new">ПОЛУЧАЙТЕ СКИДКИ И ПОДАРКИ</h1>
+
+    <form class="form__email" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="header__button new__batton" type="submit" value="ПОДПИСАТЬСЯ">
+    </form>
+
+</div>
+{% cache 100 'price_lt' %}
+<div class="discont__block">
+    <div class="new__models__block">
+        <h1 class="new__models__text">НИЖЕ 5000 ₽</h1>
+        <div class="new__models">
+            {% for p in prod_lt %}
+            <div class="corner-box-1">
+                <div class="models">
+                    <h3 class="models__text"><a class="models__text" href="{% url 'detail' id=p.pk %}">
+                        <img class="models__image" src="{{ p.image.url }}" width="205px" height="211px"
+                             alt="Rectangle_2">
+                        <p class="cart_txt">{{ p.name }}</p></a>
+                    </h3>
+                    <p class="models__price">{{ p.price }}&nbsp;₽</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="button__center">
+            <button class="models_button">
+                <a href="{% url 'price_lt' %}" class="arrow__bbuton">ВСЕ МОДЕЛИ<img class="arrow"
+                                                                                    src="{% static 'image/Arrow.svg' %}"
+                                                                                    alt=""></a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endcache %}
+
+{% endblock %}

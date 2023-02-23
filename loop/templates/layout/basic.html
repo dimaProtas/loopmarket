@@ -1,0 +1,110 @@
+{% load static %}
+{% load cache %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'market_shop/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>
+        {% block title %} Loop Market {% endblock %}
+    </title>
+</head>
+
+<body>
+
+<div class="box__header">
+    <div class="top_header">
+        <div class="header">
+            {% cache 100 'navbar' %}
+            <ol class="header_left">
+                {% for c in category %}
+                <li><a class="header_link" href="{% url 'category' c.pk %}">{{ c.name }}</a></li>
+                {% endfor %}
+            </ol>
+            <div class="header_center">
+                <img class="header_img" src="{% static 'image/Frame.svg' %}" alt="Frame">
+                <a class="header_text" href="{% url 'index' %}">the loop</a>
+            </div>
+            <ol class="header_right">
+                <li><a class="header_link" href="">Оплата</a></li>
+                <li><a class="header_link" href="{% url 'delivery' %}">Доставка</a></li>
+                {% endcache %}
+                <li><a class="header_link" href="{% url 'cart:cart_detail' %}">
+                    <img class="basket" src="{% static 'image/Vector.png' %}" alt="Корзина">
+                    <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+    {{ cart.sum_product }}
+  </span>
+                </a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+{% if messages %}
+<div class="p-3 mb-2 bg-info text-dark">
+    {% for message in messages %}
+    {% if message.tags %}{% endif %}{{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+{% block footer %}
+{% cache 100 'footer' %}
+<div>
+    <div class="footer banner__top">
+        <div class="king__blokc">
+            <h2 class="footer__header big__header"><img class="footer__img" src="{% static 'image/Frame.svg' %}" alt="">
+                the loop
+            </h2>
+            <p class="footer__text">Contacts of the worker: dima_protasevich92@mail.ru
+                ornare ut.</p>
+        </div>
+        <div class="mini__bloc">
+            <h3 class="footer__header">Основные ссылки</h3>
+            <p class="footer__text">О компании</p>
+            <p class="footer__text">Каталог</p>
+            <p class="footer__text">Доставка</p>
+            <p class="footer__text">Оплата</p>
+        </div>
+        <div class="mini__bloc">
+            <h3 class="footer__header">Категории</h3>
+            <p class="footer__text">Мужская одежда</p>
+            <p class="footer__text">Женская одежда</p>
+            <p class="footer__text">Детская одежда</p>
+            <p class="footer__text">Для животных</p>
+        </div>
+        <div class="mini__bloc">
+            <h3 class="footer__header">ПОЛЕЗНЫЕ ССЫЛКИ</h3>
+            <p class="footer__text">Таблица размеров</p>
+            <p class="footer__text">Блог о моде</p>
+            <p class="footer__text">Наша миссия</p>
+        </div>
+        <div class="mini__bloc">
+            <h3 class="footer__header">СОЦ СЕТИ</h3>
+            <p class="footer__text"><img class="mini_img" src="{% static 'image/vk.svg' %}" alt="vk"> VK.com</p>
+            <p class="footer__text"><img class="mini_img" src="{% static 'image/faceboock.svg' %}" alt="Facebook">
+                Facebook</p>
+            <p class="footer__text"><img class="mini_img" src="{% static 'image/inst.svg' %}" alt=""> Instagram</p>
+        </div>
+    </div>
+    <div class="end__block">
+        <p class="privat_pol">Copyright © 2019. Все права защищены</p>
+        <p class="privat_pol">Политика приватности</p>
+    </div>
+</div>
+{% endcache %}
+{% endblock %}
+
+
+</body>
+</html>

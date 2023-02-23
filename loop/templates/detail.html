@@ -1,0 +1,43 @@
+{% extends 'layout/basic.html' %}
+{% load static %}
+
+{% block title %}Loop Market::{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="detail__block">
+    <h2 class="detail_category top_category">{{ product.category.name }}</h2>
+
+    {% if product.image %}
+    <img class="detail_image" width="370px" height="390px" src="{{ product.image.url }}">
+    {% endif %}
+    <div class="block__category">
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.description|safe }}</p>
+        <div class="price_in_stock">
+            <p>Цена: {{ product.price }} ₽</p>
+            <p>
+                {% if product.in_stock %}
+                В наличии
+                {% else %}
+                Нет в наличии
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+{% if product.in_stock %}
+<div class="form_add_bascet">
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input class="models_button detail_button" type="submit" value="Добавить в корзину">
+    </form>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+
+</body>
+</html>

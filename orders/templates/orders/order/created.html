@@ -1,0 +1,9 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Спасибо за заказ{% endblock %}
+
+{% block content %}
+    <h1 class="top_category detail_category">Спасибо за заказ</h1>
+    <p class="text">Ваш заказ был успешно выполнен. Ваш номер заказа:
+        <strong class="order_text">{{ order.id }}</strong>.</p>
+{% endblock %}

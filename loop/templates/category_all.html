@@ -1,0 +1,23 @@
+{% extends 'layout/basic.html' %}
+{% load static %}
+
+
+{% block title %}Loop Market::Все товары{% endblock %}
+
+{% block content %}
+<h2 class="top_category">Новые модели</h2>
+<div class="category_dress_block">
+    {% for p in prod_new %}
+    <div class="dress__mini__block">
+        <h3 class="dress__text"><a class="dress__text" href="{% url 'detail' id=p.pk %}">
+            {% if p.image %}
+            <img class="dress__image" src="{{ p.image.url }}" width="277px" height="236px" alt="Rectangle">
+            {% endif %}
+            <p class="name_filter">{{ p.name }}</p>
+        </a></h3>
+        <p class="price_new_lt">{{ p.price }} ₽</p>
+    </div>
+    {% endfor%}
+</div>
+
+{% endblock %}

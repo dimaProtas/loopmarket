@@ -1,0 +1,26 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+    <h1 class="top_category top_ordering">Оформление</h1>
+    <div class="ordering">
+        <div class="order-info">
+        <h3>Ваш заказ</h3>
+        <ul>
+            {% for item in cart %}
+                <li>
+                    {{ item.quantity }}x {{ item.product.name }}
+                    <span>{{ item.total_price }} ₽</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <p>Всего: {{ cart.get_total_price }} ₽</p>
+    </div>
+    <form action="." method="post" class="order-form">
+        {{ form.as_p }}
+        <p><input class="models_button detail_button ordering_button" type="submit" value="Оформить заказ"></p>
+        {% csrf_token %}
+    </form>
+    </div>
+{% endblock %}
